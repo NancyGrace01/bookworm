@@ -1,0 +1,78 @@
+{% extends "admin/admin_layout.html" %}
+{% block main %}
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">ALL BOOKS</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard')}}">Dashboard</a></li>
+                            <li class="breadcrumb-item active">All Books</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                 
+                                <a href="{{ url_for('addbook') }}" class="btn btn-outline-primary">Add Book</a>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+
+                          {% set m = get_flashed_messages(with_categories=True) %} 
+                              {% if m: %}
+                              {% for cat,msg in m %}
+                                  {% if cat =="error" %}
+                                  <div class="alert alert-danger">{{ msg }}</div>
+                                  {% else %}
+                                  <div class="alert alert-info">{{ msg }}</div>
+                                  {% endif %}
+                              {% endfor %}
+                              {% endif %}
+                            
+<div class="card-body">
+{% if books %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Book Title</th>
+      <th scope="col">Category</th>
+      <th scope="col">Cover</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for book in books %}
+    <tr>
+      <th scope="row">{{ loop.index }}</th>
+      <td>{{ book.book_title }}</td>
+      <td>{{ book.catdeets.cat_name }}</td>
+      <td><img src="/static/uploads/{{book.book_cover}}" height="100"></td>
+      <td><a href="{{ url_for('edit_book',id=book.book_id)}}" class="btn btn-sm btn-primary">Edit</a> <a href="{{ url_for('book_delete', id=book.book_id)}}" class="btn btn-sm btn-danger">Delete</a> 
+        
+        {% if book.book_status =="1"%}
+        <a href="" class="btn btn-sm btn-success">Published</a>
+        
+        {% else %}
+        <a href="" class="btn btn-sm btn-secondary">Not Published</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+     
+   <tr>
+      <th scope="row">1</th>
+      <td>Fame!</td>
+      <td>Angel</td>
+      <td><img src="/static/images/b2.png" height="100"></td>
+      <td><a href="" class="btn btn-sm btn-primary">Edit</a> <a href="" class="btn btn-sm btn-danger">Delete</a> <a href="" class="btn btn-sm btn-success">Published</a></td>
+    </tr>
+    
+  </tbody>
+</table>
+
+{% else %}
+<div class="alert alert-info"> No Book Found...<a href="{{ url_for('addbook') }}" class="alert-link">Click Here to Add a Book</a></div>
+{% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                {% endblock %}

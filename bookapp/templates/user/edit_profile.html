@@ -1,0 +1,28 @@
+{% extends "user/home_layout.html"%}
+{% block content%}
+     
+<div class="content" style="background-color: white;padding:3em">
+  <h3>Edit Your Profile</h3>
+  <form action="" enctype="multipart/form-data" method="POST">{{ pform.csrf_token }}
+    {% if pform.fullname.errors %}
+    <div class="alert alert-danger">{{ pform.fullname.errors }}</div>
+    {% endif %}
+    <div class="mb-3">
+        {{ pform.fullname.label }}
+        {{ pform.fullname(class_='form-control border-success', value=userdeets.user_fullname) }}
+    </div>
+
+    <div class="mb-3">
+        
+        {{ pform.btnsubmit(class_='btn btn-danger noround') }}
+    </div>
+</form>
+   </div>
+
+ {% endblock %}
+
+ 
+{% block partner%}
+{% endblock %}
+{% block featured %}
+{% endblock %}

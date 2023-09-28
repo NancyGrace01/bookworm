@@ -1,0 +1,39 @@
+{% extends "user/home_layout.html" %}
+{% block content %}
+
+<div class="content" style="background-color: white;padding:3em">
+    <h3>Donation Form: Thank You!</h3>
+    <p>Kindly complete the form below with the amount you wish to donate. Click the button below and it will take you to a page where you will input your card details...</p>
+
+
+    <form action="" method="POST">{{ dform.csrf_token }}
+      {% if dform.fullname.errors %}
+      <div class="alert alert-danger">{{ dform.fullname.errors }}</div>
+      {% endif %}
+      <div class="mb-3">
+          {{ dform.fullname.label }}
+          {{ dform.fullname(class_='form-control border-success noround',value=deets.user_fullname) }}
+      </div>
+      <div class="mb-3">
+        {{ dform.email.label }}
+        {{ dform.email(class_='form-control border-success noround',value=deets.user_email) }}
+    </div>
+    <div class="mb-3">
+        {{ dform.amt.label }}
+        {{ dform.amt(class_='form-control border-success noround') }}
+    </div>
+  
+      <div class="mb-3">
+          
+          {{ dform.btnsubmit(class_='btn btn-danger noround') }}
+      </div>
+  </form>
+     </div>
+     {%endblock %}
+
+     {% block partner %}
+
+     {%endblock%}
+
+     {% block featured %}
+     {%endblock%}

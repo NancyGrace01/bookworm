@@ -1,0 +1,26 @@
+{% extends "user/home_layout.html"%}
+{% block content %}
+ 
+     
+<div class="content" style="background-color: white;padding:3em">
+  {% set m = get_flashed_messages(with_categories=True) %} 
+                              {% if m: %}
+                              {% for cat,msg in m %}
+                                  {% if cat =="error" %}
+                                  <div class="alert alert-danger">{{ msg }}</div>
+                                  {% else %}
+                                  <div class="alert alert-info">{{ msg }}</div>
+                                  {% endif %}
+                              {% endfor %}
+                              {% endif %}
+  <h3>Welcome {{ userdeets.user_fullname }}! </h3>
+  <p>This is your dashboard, please use the second-level menu to carry out tasks</p>
+ </div>
+
+  </div>
+{% endblock%}
+{% block partner %}{% endblock %}
+{% block feature %}{% endblock %}
+ 
+
+

@@ -1,0 +1,76 @@
+{% extends "user/home_layout.html" %}
+{% block content %}
+
+<div class="content" style="background-color: white;padding:3em">
+    <h2>Confirmation Page</h2>
+    <p>Kindly confirm the following details: take note of the transaction reference</p>
+    <div class="mb-3">
+        <label>Donor's Name:</label>
+        <b>{{ donation_deets.don_fullname }}</b>
+    </div>
+    <div class="mb-3">
+        <label>Donor's Email:</label>
+        <b>{{ donation_deets.don_email }}</b>
+    </div>
+    <div class="mb-3">
+        <label>Donor's Amount:</label>
+        <b>NGN {{ donation_deets.don_amt/100 }}</b>
+    </div>
+    <div class="mb-3">
+        <label>TRANSACTION REF:</label>
+        <span class="text-danger bg-warning"><b>{{ donation_deets.don_refno }}</b></span>
+    </div>
+    <hr>
+    <h5>JavaScript Method(Popup)</h5>
+    <form id="paymentForm">
+        <div class="mb-3">
+            <a href="/dashboard" class="btn btn-warning noround">Cancel Payment</a>
+            <!-- <button class="btn btn-danger noround">Confirm Payment</button> -->
+            <button class="btn btn-dark noround" onclick="payWithPaystack(event)">Confirm Payment (Popup)</button>
+            
+        </div>
+    </form>
+    <hr>
+    <h5>Redirect Method</h5>
+    <a href="/initialize/paystack/" class="btn btn-success noround">Make Payment Now</a>
+    
+     </div>
+     {%endblock %}
+     {% block customjs %}
+     <script src="https://js.paystack.co/v1/inline.js"></script>
+     <script>
+        const paymentForm = document.getElementById('paymentForm');
+        paymentForm.addEventListener("submit", payWithPaystack, false);
+
+function payWithPaystack(e) {
+  e.preventDefault();
+
+  let handler = PaystackPop.setup({
+    key: 'pk_test_0b0e51811506285457514a292bd84f66f1863bd5', // Replace with your public key
+    email: "{{ donation_deets.don_email }}",
+    amount: "{{ donation_deets.don_amt/100 }}",
+    ref: "{{ donation_deets.don_refno }}", 
+    onClose: function(){
+      alert('Window closed.');
+    },
+    callback: function(response){
+        console.log(reference);
+      let message = 'Payment complete! Reference: ' + response.reference;
+      //make ajax call to update the db with the payment status
+      alert(message);
+    }
+  });
+
+  handler.openIframe();
+}
+    
+    </script>
+
+     {%endblock%}
+
+     {% block partner %}
+
+     {%endblock%}
+
+     {% block featured %}
+     {%endblock%}

@@ -1,0 +1,76 @@
+{% extends "user/home_layout.html"%}
+{% block content%}
+
+<div class="row py-3 justify-content-center" id="searchrow" style="background-color: white;">
+  <div class="col-11 row justify-content-between input-group">
+
+      <div class="col-md-5">
+   <select name="bookcat" id="bookcat" class="form-control">
+  <option  value="">Book Category</option> 
+   </select>
+      </div>
+      <div class="col-md-5">
+          <input type="text" name="searchkeyword" id="searchkeyword" class="form-control" placeholder="Type A Keyword"
+          value="">
+      </div>
+
+      <div class="col-md-2">
+          <p class="text-center search-btn">
+              <button type="button" class="btn btn-danger noround" id="searchbtn">
+                  SEARCH 
+                  <span class="fas fa-search ml-2"></span>
+              </button>
+          </p>
+      </div>
+
+  </div>
+</div>
+<!-- End search -->
+   
+<div class="row">
+  <div class="col-md-2 px-2 mt-3 bg-light">
+  
+      <div>
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                Title
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                Category
+              </label>
+            </div>
+      </div>
+  </div>
+ 
+        {%endblock%}
+
+{% block partner %}
+<div class="layout" id="partner">
+  
+  <div class="container px-4 py-5" id="custom-cards">
+    <h2 class="pb-2 border-bottom">Book Review</h2>
+
+    <div class="row row-cols-1 row-cols-lg-4 align-items-stretch g-4 py-5">
+      
+      {% for book in books %}
+      <div class="col">
+        <a href="{{ url_for('book_details',id=book.book_id)}}">
+       <img src="/static/uploads/{{book.book_cover}}" class="img-fluid bk" alt="">
+      </a>    
+       <div class="deets"><h6>{{book.book_title}}</h6>
+        <p><i>{{ book.catdeets.cat_name }}</i></p>
+        <p><a href="">{{ book.bookreviews|count}} Reviews</a></p>          
+       </div>  
+       </div>
+       
+       {% endfor %}
+       
+      </div>
+    </div> 
+   </div>
+{% endblock %}
+{% block feature %}{% endblock %}

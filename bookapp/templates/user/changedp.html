@@ -1,0 +1,28 @@
+{% extends "user/home_layout.html"%}
+{% block content%}
+     
+<div class="content" style="background-color: white;padding:3em">
+  <h3>Change Your Profile Picture</h3>
+  <form action="" enctype="multipart/form-data" method="POST">{{ dpform.csrf_token }}
+    {% if dpform.dp.errors %}
+    <div class="alert alert-danger">{{ dpform.dp.errors }}</div>
+    {% endif %}
+    <div class="mb-3">
+        {{ dpform.dp.label }}
+        {{ dpform.dp }}
+    </div>
+
+    <div class="mb-3">
+        
+        {{ dpform.btnupload(class_='btn btn-danger noround') }}
+    </div>
+</form>
+   </div>
+
+ {% endblock %}
+
+ 
+{% block partner%}
+{% endblock %}
+{% block featured %}
+{% endblock %}

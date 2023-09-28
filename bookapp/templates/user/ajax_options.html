@@ -1,0 +1,60 @@
+{% extends "user/home_layout.html" %}
+
+{% block content %}
+<div class="content px-3 py-3 bg-white">
+    <form id="myform">
+    <div class="row">
+        <div id="fdkbk"></div>
+        <div class="col">
+            {{ cform.email.label}}
+            {{ cform.email(class_='form-control border-success')}}
+        </div>
+        <div class="col">
+            <label class="text-danger">The field is required</label><br>
+            {{ cform.csrf_token }}
+            {{ cform.btnsubmit(class_='btn btn-danger noround',type='button')}}
+        </div>
+    </div>
+</form>
+</div>
+
+{% endblock %}
+
+
+{% block customjs %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#btnsubmit').click(function(event){
+        event.preventDefault()
+        var data = $('#myform').serialize() //picks all the data at once except files|name attribute must be set on the inputs, a form must exist and submitable
+        var myform = document.getElementById('myform')//$('#myform')[0]
+        //var data = new FormData(myform)//picks all form data at once too including files
+        $.ajax({
+            url:"/ajaxopt/",//action
+            type:"post",//method
+            data:data, //name
+            dataType:'json',
+            error:function(errmsg){
+                console.log(errmsg)
+            },
+            success:function(serverRsp){
+                $('#fdkbk').html(serverRsp).addClass('alert alert-info')
+
+            },
+            complete:function(){
+                $('#btnsubmit').val('Subscribe')
+            },
+            beforeSend:function(){
+                $('#btnsubmit').val('Please wait...')
+            }
+
+        })
+       
+    })
+
+})
+
+</script>
+
+
+{% endblock %}

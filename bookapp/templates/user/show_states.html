@@ -1,0 +1,33 @@
+{% extends "user/home_layout.html" %}
+{% block content %}
+<div class="content">
+    <select name="state" id="state" class="form-control mt-3">
+        <option>Please select</option>
+        {% for s in states %}
+        <option value="{{ s.state_id}}">
+            {{ s.state_name}}
+        </option>
+        {% endfor %}
+
+    </select>
+    <div id='mylga'></div>
+</div>
+
+{% endblock %}
+
+{% block customjs %}
+<script>
+$(document).ready(function(){
+    $('#state').change(function(){
+        //retrieve the selected state
+    var selected_state = $(this).val()
+    var url = "/lga/"+selected_state
+    $('#mylga').load(url)
+
+    })
+    
+})
+
+</script>
+
+{% endblock%}

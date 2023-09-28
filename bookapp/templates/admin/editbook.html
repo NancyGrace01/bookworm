@@ -1,0 +1,84 @@
+{% extends 'admin/admin_layout.html' %}
+{% block main %}
+                <main>
+                   
+                    
+  <div class="container-fluid px-4">
+                        <h1 class="mt-4">EDIT BOOK</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard')}}">Dashboard</a></li>
+                              <li class="breadcrumb-item active">Edit Book</li>
+                        </ol>
+                      <div class="row">
+                          <div class="col">
+
+                      
+                              
+            <form action="{{ url_for('addbook')}}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" value="{{ csrf_token() }}" name="csrf_token">
+          <div class="mb-3">
+            <label for="title" class="form-label">Book Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ deets.book_title }}">
+             
+          </div>
+          <div class="mb-3">
+            <label for="author" class="form-label">Category</label>
+            <select name="category" id="category" class="form-control">
+                <option value="">Please Select</option>
+                {% for c in cats%}
+                {% if deets.book_catid == c.cat_id %}
+                <option value="{{ c.cat_id }}" selected="selected">{{ c.cat_name }}</option>
+                {% else %}
+                <option value="{{ c.cat_id }}">{{ c.cat_name}}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+          </div>
+           
+          <fieldset class="mb-3">
+            <legend>Status</legend>
+            <div class="form-check">
+              <input type="radio" name="status" value="1" class="form-check-input" id="exampleRadio1" {% if deets.book_status =="1"%}checked="checked"{% endif %}>
+              <label class="form-check-label" for="exampleRadio1">Publish</label>
+            </div>
+            <div class="mb-3 form-check">
+              <input type="radio" name="status" value="0" class="form-check-input" id="exampleRadio2">
+              <label class="form-check-label" for="exampleRadio2" {% if deets.book_status =="0"%}checked="checked"{% endif %}>Do Not Publish</label>
+            </div>
+          </fieldset>
+          {% if deets.book_cover !='default.png' %}
+          <div class="mb-3">
+            <label class="form-label" for="customFile">Current Cover</label>
+            <img src="/static/uploads/{{ deets.book_cover}}" style="max-height: 100px;">
+          </div>
+          {% endif %}
+
+          <div class="mb-3">
+            <label class="form-label" for="customFile">{% if deets.book_cover !='default.png'%}Change {% else %}Upload{% endif %}Cover</label>
+            <input type="file" class="form-control" id="customFile" name="cover">
+          </div>
+
+
+           <div class="mb-3">
+            <label class="form-label" for="description">Description</label>
+         <textarea name="description" id="description" class="form-control">{{ deets.book_desc }}</textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="yearpub">Year Published</label>
+         <input class="form-control" id="yearpub" name="yearpub" value="{{ deets.book_publication }}">
+          </div>
+          
+         
+          <button type="submit" class="btn btn-primary">Edit Book!</button>
+        </form>
+
+
+                          </div>
+                      </div>
+                        
+                    </div>
+
+
+                </main>
+{% endblock %}

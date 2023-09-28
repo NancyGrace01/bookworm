@@ -1,0 +1,103 @@
+{% extends "user/home_layout.html"%}
+
+{% block partner %} {% endblock %}
+{% block featured %}{% endblock %}
+{% block customcss %} style="background-color:white";{% endblock %}
+{% block content %} 
+<div class="content">
+    
+
+
+  <div class="row g-5"> 
+  <div class="col-md-4 mb-3">
+    <div class="position-sticky" style="top: 2rem;">
+    <img src="/static/uploads/{{book.book_cover}}" class="img-fluid"  style="max-height:500px">
+    </div>
+  </div> 
+  
+  <div class="col-md-8 mt-5">
+    <h3 class="pb-4 mb-4 fst-italic">
+     {{ book.book_title }}
+    </h3>
+    <p class="border-bottom">{{ book.book_desc }}</p>
+    {% if book.bookreviews|count > 0%}
+    {% for r in book.bookreviews %}
+
+    <article class="blog-post">
+      <h5 class="blog-post-title">{{ r.rev_title }}</h5>
+      <p class="blog-post-meta">Reviewed on {{ r.rev_date }} by <a href="{{r.reviewby.user_id}}">{{ r.reviewby.user_fullname}}</a></p>
+
+      <p>{{ r.rev_text }}</p>
+      <hr> 
+    </article>
+    {% endfor %}
+    {%else%}
+    <div class="alert alert-info" id="noreview">No review found on this book</div>
+    {% endif %}
+
+         
+    {% if session.get('userloggedin') != None%}
+    <article>
+      <div id="feedback"></div>
+    <form>
+      <div class="mb-3 row">
+        <label class="col-md-3">Title</label>
+        <div class="col-md-9">
+          <input type="hidden" id="bookid" value="{{ book.book_id }}">
+          <input type="text" class="form-control border-info" id="title">
+        </div>
+      </div>
+       <div class="mb-3 row">
+        <label class="col-md-3">Review</label>
+        <div class="col-md-9">
+           <textarea name="" class="form-control border-info" id="content"></textarea>
+        </div>
+      </div>
+       <div class="mb-3 row">
+         <button class="btn btn-danger noround btn-lg" id="btn">Submit Review</button>
+       </div>
+    </form>  
+    </article>
+    {% else %}
+    <div class="alert alert-info"><a href="{{ url_for('login')}}" class="alert-link">Login</a> to review this Book</div>
+    {% endif %}
+
+
+
+  </div>
+
+ 
+
+</div>
+
+
+
+ </div>
+{% endblock %}
+
+{% block customjs %}
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#btn').click(function(event){
+    event.preventDefault();
+    //make ajax call using the $.post method
+    var title =$("#title").val()
+    var content =$("#content").val()
+    var csrf = "{{csrf_token()}}"
+    var bookid = $('#bookid').val()
+    var data2send = {"title":title, "content":content, "csrf_token":csrf,"book":bookid}
+    $.post("/submit_review/",data2send, function(serverRsp){
+      $('#feedback').append(serverRsp)
+      $('#noreview').hide()
+      $('#content').val('')
+      $('#title').val('')
+     
+      
+    })
+
+  })
+})
+
+</script>
+
+{% endblock %}
